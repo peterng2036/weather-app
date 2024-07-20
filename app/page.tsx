@@ -58,18 +58,61 @@ const getWeatherData = async () => {
   return data as WeatherData;
 }
 
+const getFormattedDateString = (date: Date) => {
+  return `${date.getFullYear()}-${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}-${date.getDay() < 10 ? '0' + date.getDay() : date.getDay()}`
+}
+
+const getDayOfWeek = (date: Date) => {
+  switch (date.getDay()) {
+    case 1:
+      return 'Monday';
+    case 2:
+      return 'Tuesday';
+    case 3:
+      return 'Wednesday';
+    case 4:
+      return 'Thursday';
+    case 5:
+      return 'Friday';
+    case 6:
+      return 'Saturday';
+    case 7:
+      return 'Sunday';
+    default:
+      break;
+  }
+}
+
 export default async function Home() {
-  const data = await getWeatherData()
+  const data = await getWeatherData();
+  const now = new Date();
   return (
-    <div className="w-screen h-screen bg-gray-200">
-      <div className="flex items-center justify-center flex-col w-1/2">
-        <div className="bg-gray-600 text-white rounded-full w-1/2 px-4 py-2">
-          <p>{data.location.region}, {data.location.country}</p>
+    <main className="w-screen h-screen  flex">
+      <div className="w-4/12 h-100 p-12 flex flex-col items-center gap-12">
+
+        <div className="bg-gray-300 rounded-full w-full px-6 p-4">
+          {data.location.region}, {data.location.country}
         </div>
+
         <img src={data.current.condition.icon} alt="" />
-        <p>{data.current.temp_c}</p>
+
+        <p className="text-8xl">{data.current.temp_c}°C</p>
+
         <p>{data.current.condition.text}</p>
+
+        <div className="bg-gray-300 w-5/6 h-1 rounded-full">
+        </div>
+
+        <p>{getFormattedDateString(now)}</p>
+
+        <p className="text-2xl">{getDayOfWeek(now)}</p>
+
+        <p className="text-5xl">{data.location.region}</p>
+
       </div>
-    </div>
+
+      <div className="w-8/12 h-100 bg-gray-200"></div>
+
+    </main>
   );
 }
