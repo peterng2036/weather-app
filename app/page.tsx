@@ -1,3 +1,8 @@
+import searchIcon from "../public/search.svg";
+import Image from 'next/image';
+import { Roboto_Flex } from 'next/font/google'
+import LocationSearchInput from "@/components/LocationSearchInput/LocationSearchInput";
+
 type Location = {
   name: string;
   region: string;
@@ -82,17 +87,16 @@ const getDayOfWeek = (date: Date) => {
       break;
   }
 }
+const roboto = Roboto_Flex({ subsets: ['latin'] })
 
 export default async function Home() {
   const data = await getWeatherData();
   const now = new Date();
   return (
-    <main className="w-screen h-screen  flex">
-      <div className="w-4/12 h-100 p-12 flex flex-col items-center gap-12">
+    <main className={`w-screen h-screen  flex ${roboto.className}`}>
+      <div className="w-4/12 h-100 p-12 flex flex-col items-center">
 
-        <div className="bg-gray-300 rounded-full w-full px-6 p-4">
-          {data.location.region}, {data.location.country}
-        </div>
+        <LocationSearchInput region={data.location.region} country={data.location.country}></LocationSearchInput>
 
         <img src={data.current.condition.icon} alt="" />
 
